@@ -15,9 +15,19 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-jpa</artifactId>
+        </dependency>
+        <dependency>
             <groupId>com.vaudoise</groupId>
-            <artifactId>insurance-company-api</artifactId>
-            <version>${project.version}</version>
+            <artifactId>insurance-company-model</artifactId>
+            <version>0.1.0-SNAPSHOT</version>
+            <scope>compile</scope>
         </dependency>
 
 
