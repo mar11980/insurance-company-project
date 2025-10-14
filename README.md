@@ -18,5 +18,40 @@ insurance-company-business
 to create different services using by controllers 
 
 insurance-company-server
-to boot application . This module it's the core of application. 
+to boot application . This module it's the core of application.
 
+								 ┌───────────────────────┐
+								 │       Client          │
+								 ├───────────────────────┤
+								 │ - id: Long            │
+								 │ - name: String        │
+								 │ - phone: String       │
+								 │ - email: String       │
+								 │                       │
+								 ├───────────────────────┤
+								 │ + getContracts():     │
+								 │     List<Contract>    │
+								 └──────────┬────────────┘
+											│
+							 ┌──────────────┴──────────────┐
+							 │                             │
+			┌───────────────────────────┐      ┌────────────────────────────┐
+			│       PersonClient        │      │       CompanyClient        │
+			├───────────────────────────┤      ├────────────────────────────┤
+			│ - birthDate: LocalDate    │      │ - companyIdentifier: String│
+			└───────────────────────────┘      └────────────────────────────┘
+
+
+							1 ────────────< * 
+									 (owns)
+				┌───────────────────────────────────────────────┐
+				│                  Contract                     │
+				├───────────────────────────────────────────────┤
+				│ - id: Long                                    │
+				│ - startDate: LocalDate                        │
+				│ - endDate: LocalDate                          │
+				│ - costAmount: BigDecimal                      │
+				│ - updateDate: OffsetDateTime                  │
+				│                                               │
+				│ # client: Client                              │
+				└───────────────────────────────────────────────┘
