@@ -1,11 +1,12 @@
 package vaudoise.insurance.service;
 
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
-import vaudoise.insurance.entity.CompanyClient;
-import vaudoise.insurance.entity.Contract;
-import vaudoise.insurance.entity.PersonClient;
-import vaudoise.insurance.entity.Client;
-import vaudoise.insurance.model.ClientDtos;
+import vaudoise.insurance.model.entity.CompanyClient;
+import vaudoise.insurance.model.entity.Contract;
+import vaudoise.insurance.model.entity.PersonClient;
+import vaudoise.insurance.model.entity.Client;
+import vaudoise.insurance.model.model.ClientDtos;
 import vaudoise.insurance.repository.ClientRepository;
 import vaudoise.insurance.repository.ContractRepository;
 
@@ -26,7 +27,7 @@ public class ClientService {
         this.contractRepository = contractRepository;
     }
 
-
+    @Transactional
     public Client createPerson(ClientDtos.CreatePersonDto dto) {
         PersonClient p = new PersonClient();
         p.setName(dto.name());
@@ -35,7 +36,7 @@ public class ClientService {
         p.setBirthDate(dto.birthDate());
         return clientRepository.save(p);
     }
-
+    @Transactional
     public Client createCompany(ClientDtos.CreateCompanyDto dto) {
         CompanyClient c = new CompanyClient();
         c.setName(dto.name());
@@ -45,6 +46,8 @@ public class ClientService {
         return clientRepository.save(c);
     }
 
+    @Transactional
+    @Modifying
     public void updateClient(Long id, Client updated) {
         Client existing = clientRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Client not found"));
         existing.setName(updated.getName());

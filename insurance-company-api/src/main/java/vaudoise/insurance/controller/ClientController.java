@@ -1,16 +1,20 @@
 package vaudoise.insurance.controller;
 
 
+import io.swagger.v3.oas.annotations.*;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import vaudoise.insurance.entity.Client;
-import vaudoise.insurance.entity.CompanyClient;
-import vaudoise.insurance.entity.PersonClient;
-import vaudoise.insurance.model.ClientDtos;
+import vaudoise.insurance.model.entity.Client;
+import vaudoise.insurance.model.entity.CompanyClient;
+import vaudoise.insurance.model.entity.PersonClient;
+import vaudoise.insurance.model.model.ClientDtos;
 import vaudoise.insurance.service.ClientService;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -35,7 +39,11 @@ public class ClientController {
         return ResponseEntity.created(URI.create("/api/clients/" + c.getId())).build();
     }
 
-
+    @Operation(summary = "find an existing client")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Client found successfully"),
+            @ApiResponse(responseCode = "500", description = "Client not found")
+    })
     @GetMapping("/{id}")
     public ResponseEntity<ClientDtos.ClientResponse> getClient(@PathVariable Long id) {
         Optional<Client> opt = clientService.findById(id);
@@ -50,17 +58,27 @@ public class ClientController {
         }
     }
 
-
+    @Operation(summary = "Update an existing client")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Client updated successfully"),
+            @ApiResponse(responseCode = "500", description = "Client not found"),
+            @ApiResponse(responseCode = "400", description = "Validation error")
+    })
     @PutMapping("/{id}")
-    public ResponseEntity<Void> updateClient(@PathVariable Long id, @RequestBody @Valid ClientDtos.ClientResponse dto) {
-// We accept the response DTO shape for updates but will ignore birthDate/companyIdentifier updates
+    public ResponseEntity<Map<String, String>> updateClient(@PathVariable Long id, @RequestBody @Valid ClientDtos.ClientResponse dto) {
+        // We accept the response DTO shape for updates but will ignore birthDate/companyIdentifier updates
         Client updated;
-        if ("PERSON".equalsIgnoreCase(dto.type())) {
+        if (!("PERSON".equalsIgnoreCase(dto.type()) || "COMPANY".equalsIgnoreCase(dto.type()))) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(Map.of("error", "Client type must be either PERSON or COMPANY"));
+        }
+        else if ("PERSON".equalsIgnoreCase(dto.type())) {
             PersonClient p = new PersonClient();
             p.setName(dto.name());
             p.setPhone(dto.phone());
             p.setEmail(dto.email());
-// do not set birthDate
+             // do not set birthDate
             updated = p;
         } else {
             CompanyClient c = new CompanyClient();
@@ -73,10 +91,15 @@ public class ClientController {
         return ResponseEntity.noContent().build();
     }
 
-
+    @Operation(summary = "Delete an existing client")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Client deleted successfully"),
+            @ApiResponse(responseCode = "500", description = "Client not found")
+    })
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteClient(@PathVariable Long id) {
-        clientService.deleteClient(id);
+        Client existing = clientService.findById(id).orElseThrow(() -> new IllegalArgumentException("Client not found"));
+        clientService.deleteClient(existing.getId());
         return ResponseEntity.noContent().build();
     }
 }

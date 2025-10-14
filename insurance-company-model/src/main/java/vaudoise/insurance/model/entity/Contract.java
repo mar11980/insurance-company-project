@@ -1,4 +1,4 @@
-package vaudoise.insurance.entity;
+package vaudoise.insurance.model.entity;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -34,7 +34,7 @@ public class Contract implements Serializable {
     private OffsetDateTime updateDate;
 
     @NotNull
-    @Positive
+    @Positive(message = "Cost amount must be greater than 0")
     private BigDecimal costAmount;
 
     @PrePersist

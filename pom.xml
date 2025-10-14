@@ -23,9 +23,9 @@
         <!-- Change Spring Boot version if you want a specific one -->
         <spring.boot.version>2.7.18</spring.boot.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <springdoc.version>1.6.15</springdoc.version>
+        <springdoc.version>1.7.0</springdoc.version>
         <postgres.version>42.6.0</postgres.version>
-        <hibernate.validator.version>9.0.1.Final</hibernate.validator.version>
+        <hibernate.validator.version>6.2.5.Final</hibernate.validator.version>
         <lombok.version>1.18.30</lombok.version>
     </properties>
 

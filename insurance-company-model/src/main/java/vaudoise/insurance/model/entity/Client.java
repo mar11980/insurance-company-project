@@ -1,4 +1,4 @@
-package vaudoise.insurance.entity;
+package vaudoise.insurance.model.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -26,9 +26,10 @@ public abstract class Client {
     @NotBlank
     private String name;
 
-    @Pattern(regexp = "\\+?\\d{7,15}")
+    @Pattern(regexp = "^\\+\\d{7,15}$",message = "Phone number must start with '+' and contain 7 to 15 digits")
     private String phone;
 
     @Email
+    @Pattern(regexp = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$",message ="Email must be in format name@entreprise.domain")
     private String email;
 }

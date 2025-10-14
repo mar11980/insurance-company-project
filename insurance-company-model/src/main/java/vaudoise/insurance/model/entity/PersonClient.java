@@ -1,4 +1,4 @@
-package vaudoise.insurance.entity;
+package vaudoise.insurance.model.entity;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -16,7 +16,7 @@ import java.time.LocalDate;
 public class PersonClient extends Client {
 
     @PastOrPresent(message = "birthDate cannot be in the future")
-    @Column(updatable = false, nullable = false)
+    @Column(updatable = false)
     private LocalDate birthDate;
 
 }

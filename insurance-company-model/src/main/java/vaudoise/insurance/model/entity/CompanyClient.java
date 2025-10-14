@@ -1,4 +1,4 @@
-package vaudoise.insurance.entity;
+package vaudoise.insurance.model.entity;
 
 
 import lombok.Getter;

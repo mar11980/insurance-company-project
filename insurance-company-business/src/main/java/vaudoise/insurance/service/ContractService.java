@@ -1,9 +1,9 @@
 package vaudoise.insurance.service;
 
 import org.springframework.stereotype.Service;
-import vaudoise.insurance.entity.Client;
-import vaudoise.insurance.entity.Contract;
-import vaudoise.insurance.model.ContractDtos;
+import vaudoise.insurance.model.entity.Client;
+import vaudoise.insurance.model.model.ContractDtos;
+import vaudoise.insurance.model.entity.Contract;
 import vaudoise.insurance.repository.ClientRepository;
 import vaudoise.insurance.repository.ContractRepository;
 
@@ -12,6 +12,7 @@ import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
 
 @Service
@@ -36,7 +37,7 @@ public class ContractService {
         c.setStartDate(dto.startDate() == null ? LocalDate.now() : dto.startDate());
         c.setEndDate(dto.endDate());
         c.setCostAmount(dto.costAmount());
-        c.setUpdateDate(OffsetDateTime.from(Instant.now()));
+        c.setUpdateDate(OffsetDateTime.now(ZoneOffset.UTC));
         return contractRepository.save(c);
     }
 
@@ -45,7 +46,7 @@ public class ContractService {
     public void updateCost(Long contractId, ContractDtos.UpdateCostDto dto) {
         Contract c = contractRepository.findById(contractId).orElseThrow(() -> new IllegalArgumentException("Contract not found"));
         c.setCostAmount(dto.costAmount());
-        c.setUpdateDate(OffsetDateTime.from(Instant.now()));
+        c.setUpdateDate(OffsetDateTime.now(ZoneOffset.UTC));
         contractRepository.save(c);
     }
 
