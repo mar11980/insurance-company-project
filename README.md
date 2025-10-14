@@ -6,15 +6,16 @@ for them. I also want to be able to manage my clients and their contracts.
 Your task as a software engineer is to create a backend system that exposes an API that will
 interact with clients and contracts.
 
-Inside the project we have three modules .
+Inside the project we have four modules .
+
+insurance-company-model
+module created for entities and dtos classes 
 
 insurance-company-api 
 list all endpoint controllers to manage different services 
 
 insurance-company-business 
 to create different services using by controllers 
-i decide to add bean and entities objects inside this module 
-to avoid creating an additional module 
 
 insurance-company-server
 to boot application . This module it's the core of application. 
