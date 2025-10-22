@@ -25,9 +25,20 @@ public class ClientController {
 
 
     @PostMapping("/person")
-    public ResponseEntity<Void> createPerson(@RequestBody @Valid ClientDtos.CreatePersonDto dto) {
-        Client c = clientService.createPerson(dto);
-        return ResponseEntity.created(URI.create("/api/clients/" + c.getId())).build();
+    public ResponseEntity<ClientDtos.ClientResponse> createPerson(@RequestBody @Valid ClientDtos.CreatePersonDto dto) {
+        PersonClient c = clientService.createPerson(dto);
+
+        ClientDtos.ClientResponse response = new ClientDtos.ClientResponse(
+                c.getId(),
+                "PERSON",
+                c.getName(),
+                c.getPhone(),
+                c.getEmail(),
+                c.getBirthDate(),
+                null
+        );
+
+        return ResponseEntity.created(URI.create("/api/clients/" + c.getId())).body(response);
     }
 
 

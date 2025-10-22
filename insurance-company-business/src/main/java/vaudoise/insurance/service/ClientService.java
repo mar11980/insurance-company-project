@@ -28,7 +28,7 @@ public class ClientService {
     }
 
     @Transactional
-    public Client createPerson(ClientDtos.CreatePersonDto dto) {
+    public PersonClient createPerson(ClientDtos.CreatePersonDto dto) {
         PersonClient p = new PersonClient();
         p.setName(dto.name());
         p.setPhone(dto.phone());
@@ -37,7 +37,7 @@ public class ClientService {
         return clientRepository.save(p);
     }
     @Transactional
-    public Client createCompany(ClientDtos.CreateCompanyDto dto) {
+    public CompanyClient createCompany(ClientDtos.CreateCompanyDto dto) {
         CompanyClient c = new CompanyClient();
         c.setName(dto.name());
         c.setPhone(dto.phone());
