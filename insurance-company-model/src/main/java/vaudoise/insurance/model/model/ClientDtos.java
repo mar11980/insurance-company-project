@@ -1,6 +1,7 @@
 package vaudoise.insurance.model.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import vaudoise.insurance.validator.client.ValidClient;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -17,7 +18,7 @@ public class ClientDtos {
             ) String phone,
             @Email @Pattern(regexp = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$",
             message = "Email must be in format name@entreprise.domain") String email,
-            @PastOrPresent LocalDate birthDate
+            @PastOrPresent(message = "birthDate cannot be in the future") LocalDate birthDate
     ) {}
 
 
@@ -35,13 +36,22 @@ public class ClientDtos {
 
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
+    @ValidClient
     public record ClientResponse(
             Long id,
-            String type,
+            @Pattern(
+                    regexp = "PERSON|COMPANY",
+                    message = "Client type must be either PERSON or COMPANY"
+            )String type,
             String name,
-            String phone,
-            String email,
-            LocalDate birthDate,
-            String companyIdentifier
+            @Pattern(
+                    regexp = "^\\+\\d{7,15}$",
+                    message = "Phone number must start with '+' and contain 7 to 15 digits"
+            ) String phone,
+            @Pattern(regexp = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$",
+                    message = "Email must be in format name@entreprise.domain") String email,
+            @PastOrPresent(message = "birthDate cannot be in the future") LocalDate birthDate,
+            @Pattern(regexp = "^[A-Za-z]{3}-\\d{3}$",message = "company " +
+                    "identifier must be in format aaa-123") String companyIdentifier
     ) {}
 }

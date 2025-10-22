@@ -22,7 +22,7 @@ public class ContractDtos {
             Long id,
             LocalDate startDate,
             LocalDate endDate,
-            BigDecimal costAmount,
+            @NotNull @Positive(message = "Cost amount must be greater than 0") BigDecimal costAmount,
             Instant updateDate //
     ) {}
 }

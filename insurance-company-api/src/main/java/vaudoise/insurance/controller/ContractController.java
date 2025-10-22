@@ -1,8 +1,6 @@
 package vaudoise.insurance.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,11 +31,6 @@ public class ContractController {
     }
 
     @Operation(summary = "Create contract for existing client")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Contract created successfully"),
-            @ApiResponse(responseCode = "500", description = "Client not found"),
-            @ApiResponse(responseCode = "400", description = "Validation error")
-    })
     @PostMapping
     public ResponseEntity<Void> createContract(@PathVariable Long clientId, @RequestBody @Valid ContractDtos.CreateContractDto dto) {
         Contract c = contractService.createContract(clientId, dto);
@@ -45,11 +38,6 @@ public class ContractController {
     }
 
     @Operation(summary = "Update contract for existing client")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Contract updated successfully"),
-            @ApiResponse(responseCode = "500", description = "Client or Contract not found"),
-            @ApiResponse(responseCode = "400", description = "Validation error")
-    })
     @PatchMapping("/{contractId}/cost")
     public ResponseEntity<Void> updateCost(@PathVariable Long clientId, @PathVariable Long contractId, @RequestBody @Valid ContractDtos.UpdateCostDto dto) {
         contractService.updateCost(contractId, dto);
@@ -57,10 +45,6 @@ public class ContractController {
     }
 
     @Operation(summary = "get all contracts for existing client")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "get all contracts for client"),
-            @ApiResponse(responseCode = "500", description = "Client not found")
-    })
     @GetMapping
     public ResponseEntity<List<ContractDtos.ContractResponse>> getActiveContracts(@PathVariable Long clientId, @RequestParam(required = false) String updatedAfter) {
         Instant instant = null;
@@ -78,10 +62,6 @@ public class ContractController {
     }
 
     @Operation(summary = "sum cost all contracts for existing client")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Sum cost contracts for client"),
-            @ApiResponse(responseCode = "500", description = "Client not found")
-    })
     @GetMapping("/sum")
     public ResponseEntity<String> sumActiveCosts(@PathVariable Long clientId) {
         Client existingClient = clientService.findById(clientId).orElseThrow(() -> new IllegalArgumentException("Client not found"));
